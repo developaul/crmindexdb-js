@@ -1,3 +1,4 @@
+import { imprimirAlerta } from './functions.js';
 import { listadoClientes } from './references.js';
 
 (() =>{
@@ -9,7 +10,7 @@ import { listadoClientes } from './references.js';
         const crearDB = window.indexedDB.open( 'crm', 1 );
 
         crearDB.onerror = () => {
-            console.error( 'Hubo un error' );
+            imprimirAlerta( 'Hubo un error', 'error' );
         }
 
         crearDB.onsuccess = () => {
@@ -34,7 +35,7 @@ import { listadoClientes } from './references.js';
         const abrirConexion = window.indexedDB.open( 'crm', 1 );
 
         abrirConexion.onerror = () => {
-            console.error( 'Hubo un error' );
+            imprimirAlerta( 'Hubo un error', 'error' );
         }
 
         abrirConexion.onsuccess = () => {
@@ -86,12 +87,12 @@ import { listadoClientes } from './references.js';
                 objectStore.delete( idEliminar );
 
                 transaction.oncomplete = () => {
-                    console.info( 'Eliminado..' );
+                    imprimirAlerta( 'Eliminado Correctamente' );
                     event.target.parentElement.parentElement.remove();
                 }
 
                 transaction.onerror = () => {
-                    console.error( 'Hubo un error' );
+                    imprimirAlerta( 'Hubo un error', 'error' );
                 }
             }
         }

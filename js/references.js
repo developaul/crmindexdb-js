@@ -5,7 +5,8 @@ const form              = document.querySelector( '#formulario' ),
       emailInput        = document.querySelector( '#email' ),
       telefonoInput     = document.querySelector( '#telefono' ), 
       empresaInput      = document.querySelector( '#empresa' ),
-      listadoClientes   = document.querySelector( '#listado-clientes' );
+      listadoClientes   = document.querySelector( '#listado-clientes' ),
+      messages          = document.querySelector( '#messages' );
 
 export {
     form,
@@ -13,5 +14,6 @@ export {
     emailInput,
     telefonoInput,
     empresaInput,
-    listadoClientes
+    listadoClientes,
+    messages
 }

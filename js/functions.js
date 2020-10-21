@@ -1,19 +1,20 @@
-import { form } from './references.js';
+import { form, messages } from './references.js';
 let DB;
 
 // Nos conectamos a la Base de datos de indexDB
 const conectarDB = () => {
     const abrirConexion = window.indexedDB.open( 'crm', 1 );
     abrirConexion.onerror = () => {
-        console.error( 'Hubo un error' );
+        imprimirAlerta( 'Hubo un error', 'error' );
     }
+    
     abrirConexion.onsuccess = () => {
         DB = abrirConexion.result;
     }
 }
 
 // Muestra una alerta en pantalla
-const imprimirAlerta = ( message, type ) => {
+const imprimirAlerta = ( message, type, where ) => {
     const alert = document.querySelector( '.alert' );
 
     if( !alert ) {
@@ -27,7 +28,13 @@ const imprimirAlerta = ( message, type ) => {
         }
 
         divMessage.textContent = message;
-        form.appendChild( divMessage );
+
+
+        if( where === 'form' ) {
+            form.appendChild( divMessage );
+        } else {
+            messages.appendChild( divMessage );
+        }
 
         setTimeout( () => {
             divMessage.remove();

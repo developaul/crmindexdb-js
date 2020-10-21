@@ -48,7 +48,7 @@ import { imprimirAlerta, conectarDB, DB } from './functions.js';
               empresa   = empresaInput.value;
 
         if( nombre === '' || email === '' || telefono === '' || empresa === '' ) {
-            imprimirAlerta( 'Todos los campos son obligatorios', 'error' );
+            imprimirAlerta( 'Todos los campos son obligatorios', 'error', 'form' );
             return;
         }
 
@@ -60,7 +60,7 @@ import { imprimirAlerta, conectarDB, DB } from './functions.js';
         objectStore.put( clienteActualizado );
         
         transaction.oncomplete = () => {
-            imprimirAlerta( 'Editado Correctamente' );
+            imprimirAlerta( 'Editado Correctamente', 'success', 'form' );
 
             setTimeout( () => {
                 window.location.href = 'index.html';
@@ -68,7 +68,7 @@ import { imprimirAlerta, conectarDB, DB } from './functions.js';
         }
 
         transaction.onerror = () => {
-            imprimirAlerta( 'Hubo un error', 'error' );
+            imprimirAlerta( 'Hubo un error', 'error', 'form' );
         }
     }
 
