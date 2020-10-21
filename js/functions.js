@@ -1,4 +1,16 @@
 import { form } from './references.js';
+let DB;
+
+// Nos conectamos a la Base de datos de indexDB
+const conectarDB = () => {
+    const abrirConexion = window.indexedDB.open( 'crm', 1 );
+    abrirConexion.onerror = () => {
+        console.error( 'Hubo un error' );
+    }
+    abrirConexion.onsuccess = () => {
+        DB = abrirConexion.result;
+    }
+}
 
 // Muestra una alerta en pantalla
 const imprimirAlerta = ( message, type ) => {
@@ -24,5 +36,7 @@ const imprimirAlerta = ( message, type ) => {
 }
 
 export {
-    imprimirAlerta
+    imprimirAlerta,
+    conectarDB,
+    DB
 }

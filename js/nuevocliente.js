@@ -6,24 +6,10 @@ import {
     empresaInput
 } from './references.js';
 
-import { imprimirAlerta } from './functions.js';
+import { imprimirAlerta, conectarDB, DB } from './functions.js';
 
 (() => {
     'use strict';
-    let DB;
-
-    // Nos conectamos a la Base de datos de indexDB
-    const conectarDB = () => {
-        const abrirConexion = window.indexedDB.open( 'crm', 1 );
-
-        abrirConexion.onerror = () => {
-            console.error( 'Hubo un error' );
-        }
-
-        abrirConexion.onsuccess = () => {
-            DB = abrirConexion.result;
-        }
-    }
 
     // Agrega un nuevo cliente
     const crearNuevoCliente = ( client ) => {
@@ -57,6 +43,8 @@ import { imprimirAlerta } from './functions.js';
             imprimirAlerta( 'Todos los campos son obligatorios', 'error' );
             return;
         }
+
+        form.reset();
 
         // crear un objecto con la información
         const cliente = { nombre, email, telefono, empresa, id: Date.now() };
