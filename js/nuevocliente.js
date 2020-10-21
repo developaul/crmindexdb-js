@@ -25,6 +25,25 @@ import { imprimirAlerta } from './functions.js';
         }
     }
 
+    // Agrega un nuevo cliente
+    const crearNuevoCliente = ( client ) => {
+        const transaction = DB.transaction( ['crm'], 'readwrite' );
+        const objectStore = transaction.objectStore( 'crm' );
+        objectStore.add( client );
+
+        transaction.onerror = () => {
+            imprimirAlerta( 'Hubo un error', 'error' );
+        }
+
+        transaction.oncomplete = () => {
+            imprimirAlerta( 'El Cliente se agregadó Correctamente' );
+
+            setTimeout( () => {
+                window.location.href = 'index.html';
+            }, 3000);
+        }
+    }
+
     // Valida el cliente
     const validarCliente = event => {
         event.preventDefault();
@@ -39,7 +58,9 @@ import { imprimirAlerta } from './functions.js';
             return;
         }
 
-        console.log( 'Agregando..' );
+        // crear un objecto con la información
+        const cliente = { nombre, email, telefono, empresa, id: Date.now() };
+        crearNuevoCliente( cliente );
     }
 
     document.addEventListener( 'DOMContentLoaded', () => {
