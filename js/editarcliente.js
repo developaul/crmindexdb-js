@@ -2,25 +2,15 @@ import {
     nombreInput,
     emailInput,
     telefonoInput,
-    empresaInput
+    empresaInput,
+    form
 } from './references.js';
+
+import { imprimirAlerta, conectarDB, DB } from './functions.js';
 
 (() => {
     'use strict';
-    let DB;
-
-    // Nos conectamos a la base de datos
-    const conectarDB = () => {
-        const abrirConexion = window.indexedDB.open( 'crm', 1 );
-
-        abrirConexion.onerror = () => {
-            console.error( 'Hubo un error' );
-        }
-
-        abrirConexion.onsuccess = () => {
-            DB = abrirConexion.result;
-        }
-    }
+    let idCliente;
 
     // Llena el formulario
     const llenarFormulario = dataClient => {
@@ -48,12 +38,51 @@ import {
         }
     }
 
+    // Actualiza un nuevo cliente
+    const actualizarCliente = event => {
+        event.preventDefault();
+
+        const nombre    = nombreInput.value,
+              email     = emailInput.value,
+              telefono  = telefonoInput.value,
+              empresa   = empresaInput.value;
+
+        if( nombre === '' || email === '' || telefono === '' || empresa === '' ) {
+            imprimirAlerta( 'Todos los campos son obligatorios', 'error' );
+            return;
+        }
+
+        // Actualizar cliente
+        const clienteActualizado = { nombre, email, telefono, empresa, id: idCliente }
+
+        const transaction = DB.transaction( ['crm'], 'readwrite' );
+        const objectStore = transaction.objectStore( 'crm' );
+        objectStore.put( clienteActualizado );
+        
+        transaction.oncomplete = () => {
+            imprimirAlerta( 'Editado Correctamente' );
+
+            setTimeout( () => {
+                window.location.href = 'index.html';
+            }, 3000);
+        }
+
+        transaction.onerror = () => {
+            imprimirAlerta( 'Hubo un error', 'error' );
+        }
+    }
+
+
+    // Events
     document.addEventListener( 'DOMContentLoaded', () => {
         conectarDB();
 
+        // Actualiza el registro
+        form.addEventListener( 'submit', actualizarCliente );
+
         // Verificar el id de la url
         const parametrosURL = new URLSearchParams( window.location.search );
-        const idCliente = Number( parametrosURL.get( 'id' ) );
+        idCliente = Number( parametrosURL.get( 'id' ) );
         
         if( idCliente ) {
             setTimeout( () => {
